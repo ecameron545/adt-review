@@ -87,6 +87,10 @@ public class ArrayMap<K, V> implements Map<K, V> {
 				K key = internal[current++].key;
 				return key;
 			}
+			
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
 
 		};
 		return it;
@@ -194,6 +198,12 @@ public class ArrayMap<K, V> implements Map<K, V> {
 				// find last value which is not null and replace internal[i] with it
 				for (int j = i + 1; j < internal.length; j++) {
 					if (internal[j] == null) {
+						
+						// checks if the item to remove is the last item in the map
+						if(j - 1 == i) {
+							internal[i] = null;
+							return;
+						}
 						Association<K, V> last = internal[j - 1];
 						internal[j - 1] = null;
 						internal[i] = last;
