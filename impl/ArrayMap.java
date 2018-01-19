@@ -124,7 +124,7 @@ public class ArrayMap<K, V> implements Map<K, V> {
 				// key was already in internal so return
 				internal[i].val = val;
 				return;
-			}
+			} 
 		}
 		grow();
 		internal[i] = newVal;
