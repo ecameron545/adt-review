@@ -25,6 +25,8 @@ import adt.Map;
  */
 public class ArrayMap<K, V> implements Map<K, V> {
 
+	int size = 0;
+
 	/**
 	 * Class for key-value pairs. This map implementation is essentially an array of
 	 * these.
@@ -87,7 +89,7 @@ public class ArrayMap<K, V> implements Map<K, V> {
 				K key = internal[current++].key;
 				return key;
 			}
-			
+
 			public void remove() {
 				throw new UnsupportedOperationException();
 			}
@@ -105,29 +107,28 @@ public class ArrayMap<K, V> implements Map<K, V> {
 	 *            The value to which this key is associated
 	 */
 	public void put(K key, V val) {
-		if(key == null)
+		if (key == null)
 			return;
-		
+
 		Association<K, V> newVal = new Association<K, V>(key, val);
-		
 
 		int i;
-		for (i = 0; i < internal.length; i++) {
-
+		for (i = 0; i < size; i++) {
 			// check for an empty (null) spot in internal
-			if (internal[i] == null) {
-				// create new association and add it to this spot
-
-				internal[i] = newVal;
-				return;
-			} else if (internal[i].key.equals(key)) {
+			if (internal[i].key.equals(key)) {
 				// key was already in internal so return
 				internal[i].val = val;
 				return;
-			} 
+			}		
 		}
-		grow();
+		
+		if(size >= internal.length) {
+			grow();
+			
+		}
+		
 		internal[i] = newVal;
+		size++;
 	}
 
 	/**
@@ -138,21 +139,15 @@ public class ArrayMap<K, V> implements Map<K, V> {
 	 * @return The value associated with this key, null if none exists
 	 */
 	public V get(K key) {
-		V ret;
-		if(key == null) {
+		if (key == null) {
 			return null;
 		}
-		
-		for (int i = 0; i < internal.length; i++) {
 
-			// check if i is at the end of the actual values in internal
-			if (internal[i] == null)
-				return null;
+		for (int i = 0; i < size; i++) {
 
 			// checks if we are at the right key
 			if (internal[i].key.equals(key)) {
-				ret = internal[i].val;
-				return ret;
+				return internal[i].val;
 			}
 		}
 		return null;
@@ -166,10 +161,8 @@ public class ArrayMap<K, V> implements Map<K, V> {
 	 * @return true if there is an association for this key, false otherwise
 	 */
 	public boolean containsKey(K key) {
-		for (int i = 0; i < internal.length; i++) {
-			if(internal[i] == null)
-				return false;
-			else if (internal[i].key.equals(key))
+		for (int i = 0; i < size; i++) {
+			if (internal[i].key.equals(key))
 				return true;
 		}
 		return false;
@@ -186,30 +179,22 @@ public class ArrayMap<K, V> implements Map<K, V> {
 		if (key == null)
 			return;
 
-		for (int i = 0; i < internal.length; i++) {
-
-			// check if i is null
-			if (internal[i] == null)
-				return;
+		for (int i = 0; i < size; i++) {
 
 			// check the key
-			else if (internal[i].key.equals(key)) {
+			if (internal[i].key.equals(key)) {
 
-				// find last value which is not null and replace internal[i] with it
-				for (int j = i + 1; j < internal.length; j++) {
-					if (internal[j] == null) {
-						
-						// checks if the item to remove is the last item in the map
-						if(j - 1 == i) {
-							internal[i] = null;
-							return;
-						}
-						Association<K, V> last = internal[j - 1];
-						internal[j - 1] = null;
-						internal[i] = last;
-						return;
-					}
+				// checks if the item to remove is the last item in the map
+				if (size - 1 == i) {
+					internal[i] = null;
+					size--;
+					return;
 				}
+				Association<K, V> last = internal[size - 1];
+				internal[size - 1] = null;
+				internal[i] = last;
+				size--;
+				return;
 			}
 		}
 	}
