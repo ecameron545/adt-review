@@ -21,7 +21,6 @@ public class MapSet<E> implements Set<E> {
 	 * The internal representation. Note this can be any map implementation.
 	 */
 	private Map<E, String> internal;
-	private int size; // size of internal
 
 	public MapSet() {
 		this.internal = new ArrayMap<E, String>();
@@ -45,16 +44,17 @@ public class MapSet<E> implements Set<E> {
 		// check if item is null
 		if (item == null)
 			return;
-		
+		/*
 		// call get and see if item is in the map
 		if (internal.containsKey(item))
 			return;
-		 
+		*/
+		
+		
 		// put item in the set
 		internal.put(item, null);
-
+		
 		// increment size
-		size++;
 	}
 
 	/**
@@ -65,9 +65,6 @@ public class MapSet<E> implements Set<E> {
 	 * @return True if the item is in the set, false otherwise
 	 */
 	public boolean contains(E item) {
-
-		if (size == 0)
-			return false;
 
 		if (item != null)
 			return internal.containsKey(item) != false;
@@ -85,24 +82,23 @@ public class MapSet<E> implements Set<E> {
 		// check if item is null
 		if (item == null)
 			return;
-
-		// make sure array isn't empty
-		if (size == 0)
-			return;
-
-		// if item is a key remove it
-		if (internal.containsKey(item) != false) {
-			internal.remove(item);
-			size--;
-		}
+		
+		internal.remove(item);
 	}
 
 	/**
-	 * The number of itmes in the set
+	 * The number of items in the set
 	 * 
 	 * @return The number of items.
 	 */
 	public int size() {
+		Iterator<E> it = internal.iterator();
+		int size = 0;
+		while(it.hasNext()) {
+			size++;
+			it.next();
+		}
+		
 		return size;
 	}
 
@@ -112,9 +108,7 @@ public class MapSet<E> implements Set<E> {
 	 * @return True if the set is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
-		if (size == 0)
-			return true;
-		return false;
+		return size() <= 0;
 	}
 
 	@Override
