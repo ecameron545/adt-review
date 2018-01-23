@@ -123,7 +123,6 @@ public class ArrayMap<K, V> implements Map<K, V> {
 		
 		if(size >= internal.length) {
 			grow();
-			
 		}
 		
 		internal[i] = newVal;
