@@ -114,7 +114,6 @@ public class ArrayMap<K, V> implements Map<K, V> {
 
 		int i;
 		for (i = 0; i < size; i++) {
-			// check for an empty (null) spot in internal
 			if (internal[i].key.equals(key)) {
 				// key was already in internal so return
 				internal[i].val = val;
