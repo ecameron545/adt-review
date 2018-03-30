@@ -47,7 +47,6 @@ public class ListBag<E> implements Bag<E> {
 			}
 
 		};
-
 	}
 
 	/**

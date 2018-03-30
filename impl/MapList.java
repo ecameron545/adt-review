@@ -112,15 +112,16 @@ public class MapList<E> implements List<E> {
 		if (index < 0 || index > size)
 			throw new IndexOutOfBoundsException();
 
+		// shift everything over to make room for the new item
 		int position;
 		for (position = size - 1; position >= index; position--) {
 			E shift = internal.get(position);
 			internal.put(position + 1, shift);
 		}
 
+		// put the new item in the array and increase size
 		internal.put(index, element);
 		size++;
-
 	}
 
 	/**
@@ -136,17 +137,20 @@ public class MapList<E> implements List<E> {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException();
 
+		// item to remove
 		E removed = internal.get(index);
 
+		// if item is not in the list return null
 		if (removed == null)
 			return null;
 
+		// find the item and takes it out, shifting all items after it over one
 		for (int position = index; position < size - 1; position++) {
-
 			E shift = internal.get(position + 1);
 			internal.put(position, shift);
 		}
 
+		// take out the last element in the internal array and decrease size
 		internal.remove(size - 1);
 		size--;
 		return removed;
