@@ -36,12 +36,15 @@ public class ListBag<E> implements Bag<E> {
 	public Iterator<E> iterator() {
 		return new Iterator<E>() {
 
+			// current position
 			int pos = 0;
 
+			// true if position is less than size
 			public boolean hasNext() {
 				return pos < internal.size();
 			}
 
+			// return position and increment pos
 			public E next() {
 				return internal.get(pos++);
 			}
@@ -50,24 +53,27 @@ public class ListBag<E> implements Bag<E> {
 	}
 
 	/**
-	 * internal.size() Add an item to the bag, increasing its count if it's already
-	 * there.
+	 * Add an item to the bag, increasing its count if it's already there.
 	 * 
 	 * @param item
 	 *            The item to add
 	 */
 	public void add(E item) {
+		
 		if (internal.size() == 0) {
 			internal.add(item);
 			return;
 		}
+		
+		// if the item is in the list, insert another one at that spot
 		for (int i = 0; i < internal.size(); i++) {
 			if (internal.get(i).equals(item)) {
 				internal.insert(i, item);
 				return;
 			}
 		}
-
+		
+		// if the item is not in the list add it to the end of the list
 		internal.add(item);
 	}
 
@@ -76,7 +82,7 @@ public class ListBag<E> implements Bag<E> {
 	 * 
 	 * @param item
 	 *            The item to check
-	 * @return The number of occurences of this item in the bag
+	 * @return The number of occurrences of this item in the bag
 	 */
 	public int count(E item) {
 		int count = 0;
@@ -84,6 +90,7 @@ public class ListBag<E> implements Bag<E> {
 		if (internal.size() == 0)
 			return 0;
 
+		// count all occurrences of the item
 		for (int i = 0; i < internal.size(); i++) {
 			if (internal.get(i).equals(item))
 				count++;
@@ -103,6 +110,7 @@ public class ListBag<E> implements Bag<E> {
 		if (internal.size() == 0)
 			return;
 
+		// remove all occurrences of the item rather than the first
 		for (int i = 0; i < internal.size(); i++)
 			if (internal.get(i).equals(item)) {
 				internal.remove(i);

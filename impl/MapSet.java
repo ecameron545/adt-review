@@ -44,18 +44,10 @@ public class MapSet<E> implements Set<E> {
 		// check if item is null
 		if (item == null)
 			return;
-		/*
-		// call get and see if item is in the map
-		if (internal.containsKey(item))
-			return;
-		*/
-		
 		
 		// put item in the set
 		internal.put(item, null);
-		
-		// increment size
-	}
+			}
 
 	/**
 	 * Does this set contain the item?
